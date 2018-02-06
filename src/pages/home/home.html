@@ -1,14 +1,42 @@
 <ion-header>
   <ion-navbar>
+      <!--<ion-buttons start>
+        <button ion-button icon-only color="royal">
+          <ion-icon name="search"></ion-icon>
+        </button>
+      </ion-buttons>-->
     <ion-title>
-      Ionic Blank
+      Coaches Anonymous!
     </ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only color="primary" (click)="newCoach(coach)">
+        <ion-icon name="person-add"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
+  
 </ion-header>
 
 <ion-content padding>
-  The world is your oyster.
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
+  <p>Welcome to Coaches Anonymous!</p>
+    <br/>
+  <p>Here are our currently active coaches:</p>
+
+  <ion-list>
+    <ion-item-sliding *ngFor="let coach of coaches" #item>
+      <ion-item>
+        <ion-avatar item-start>
+          <img src="{{coach.picURL}}">
+        </ion-avatar>
+      <p>{{coach.name}}</p>
+      <p>{{coach.description}}</p>
+      <button ion-button color="secondary" (click)="coachDetails(coach)">View</button>
+      </ion-item>
+        <ion-item-options side="right">
+          <button ion-button color="secondary">Edit</button>
+          <button ion-button color="danger">Delete</button>
+        </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+  
 </ion-content>

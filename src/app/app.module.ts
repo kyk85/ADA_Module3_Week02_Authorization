@@ -4,27 +4,49 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 
+//Modules
+import { HttpClientModule } from '@angular/common/http';
+import { IonicStorageModule } from '@ionic/storage'
+
+//Pages
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
+import { LoginPage } from '../pages/login/login';
+import { CoachAddPage } from '../pages/coach-add/coach-add';
+import { CoachDetailsPage } from '../pages/coach-details/coach-details';
+import { CoachDataProvider } from '../providers/coach-data/coach-data';
+import { HttpProvider } from '../providers/http/http';
+
+
 
 @NgModule({
   declarations: [
     MyApp,
-    HomePage
+    HomePage,
+    LoginPage,
+    CoachAddPage,
+    CoachDetailsPage
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    HttpClientModule,
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage
+    HomePage,
+    LoginPage,
+    CoachAddPage,
+    CoachDetailsPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    CoachDataProvider,
+    HttpProvider
   ]
 })
 export class AppModule {}
