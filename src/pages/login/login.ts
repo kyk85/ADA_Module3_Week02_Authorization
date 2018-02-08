@@ -1,9 +1,13 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
+//Modules
+import { Storage } from '@ionic/storage'
+
 //Pages
 import { HomePage } from '../home/home'
 import { HttpProvider } from '../../providers/http/http'
+import { CoachDataProvider } from '../../providers/coach-data/coach-data'
 
 /**
  * Generated class for the LoginPage page.
@@ -24,23 +28,23 @@ export class LoginPage {
     password:""
   }
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public httpProv: HttpProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public httpProv: HttpProvider, public coachProv: CoachDataProvider) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad LoginPage');
+    
   }
-
+  
   authLogin(user){
     this.httpProv.login(this.user.name, this.user.password)
     .then((data)=>{
-      console.log(data)
-    }
-    
-  )
-  this.navCtrl.push(HomePage)
-    
-
+      this.coachProv.saveToken(data);
+      this.navCtrl.setRoot(HomePage);
+      console.log(data);
+    }).catch((err)=>{
+      this.navCtrl.setRoot(LoginPage)
+    })
   }
-
 }
+  

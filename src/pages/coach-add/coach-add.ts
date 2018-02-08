@@ -5,7 +5,8 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 
 //Pages
-//import { HomePage } from '../home/home';
+import { HttpProvider } from '../../providers/http/http'
+import { CoachDataProvider } from '../../providers/coach-data/coach-data';
 
 /**
  * Generated class for the CoachAddPage page.
@@ -21,22 +22,29 @@ import { Storage } from '@ionic/storage';
 })
 export class CoachAddPage {
 
-  coach=[{
+  coach={
     name:"",
     description:"",
     picURL:""
-  }]
+  }
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage:Storage) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public storage:Storage, public coachProv: CoachDataProvider, public httpProv: HttpProvider) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad CoachAddPage');
   }
 
-  saveCoach(coach){
-    this.navCtrl.pop()
-    
+  saveCoach(){
+    this.coachProv.getToken().then((data)=>{
+      this.httpProv.saveCoach(data, this.coach).then((result)=>{
+        console.log(result)
+        this.navCtrl.pop()
+      })
+    }).catch((err)=>{
+      console.log(err)
+      this.navCtrl.setRoot(CoachAddPage)
+    })
   }
-
+  
 }

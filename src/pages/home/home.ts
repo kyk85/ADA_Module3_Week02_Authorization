@@ -5,11 +5,13 @@ import 'rxjs/add/operator/map';
 
 //Modules
 import { ModalController } from 'ionic-angular';
-import { Storage } from '@ionic/storage';
 
 //Pages
+import { LoginPage } from '../login/login'
 import { CoachAddPage } from "../coach-add/coach-add";
 import { CoachDetailsPage } from "../coach-details/coach-details";
+import { HttpProvider } from '../../providers/http/http';
+import { CoachDataProvider } from "../../providers/coach-data/coach-data";
 
 
 @Component({
@@ -18,35 +20,29 @@ import { CoachDetailsPage } from "../coach-details/coach-details";
 })
 export class HomePage {
 
-  coaches=[]
+  coaches
 
-  constructor(public navCtrl: NavController, public modalCtrl: ModalController, public storage: Storage) {
-    storage.get('coaches').then((val) => {
-      if (val) {
-        this.coaches=val
-      } else {
-        this.coaches=[{
-          name:"Coach1",
-          description:"Description1",
-          picURL:"https://vignette.wikia.nocookie.net/southpark/images/3/38/JeromeChef.png/revision/latest?cb=20160402120214"
-        }]
-      }
-      
+  constructor(public navCtrl: NavController, public modalCtrl: ModalController, public httpProv: HttpProvider, public coachProv: CoachDataProvider) {
+ 
+  }
+
+  ionViewDidLoad(){
+    this.coachProv.getToken().then((data)=>{
+      console.log(data)
+      this.httpProv.getCoaches(data).then((result)=>{
+        this.coaches=result
+      })
+    }).catch((err)=>{
+      this.navCtrl.setRoot(LoginPage)
     })
   }
 
   newCoach(coach){
     this.navCtrl.push(CoachAddPage);
-
   }
 
   coachDetails(coach) {
     let modal = this.modalCtrl.create(CoachDetailsPage, {coach:coach});
     modal.present();
   }
-
-  
-
-
-
 }

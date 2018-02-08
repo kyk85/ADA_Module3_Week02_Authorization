@@ -1,5 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
+import { RequestOptions } from '@angular/http';
 import { Injectable } from '@angular/core';
+
+//Modules
+import { Storage } from '@ionic/storage';
 
 /*
   Generated class for the CoachDataProvider provider.
@@ -10,22 +14,25 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class CoachDataProvider {
 
-  coaches=[{
-    name:"Coach1",
-    description:"Description1",
-    picURL:"https://vignette.wikia.nocookie.net/southpark/images/3/38/JeromeChef.png/revision/latest?cb=20160402120214"
-  },{
-    name:"Coach2",
-    description:"Description2",
-    picURL:"https://vignette.wikia.nocookie.net/southpark/images/3/38/JeromeChef.png/revision/latest?cb=20160402120214"
-  },{
-    name:"Coach3",
-    description:"Description3",
-    picURL:"https://vignette.wikia.nocookie.net/southpark/images/3/38/JeromeChef.png/revision/latest?cb=20160402120214"
-  }]
+  coaches=[]
 
-  constructor(public http: HttpClient) {
+  constructor(public http: HttpClient, public storage: Storage) {
     console.log('Hello CoachDataProvider Provider');
   }
+
+  saveToken(token){
+    this.storage.set('token', token)
+  }
+
+  getToken(){
+    return new Promise((resolve,reject) => {
+      this.storage.get('token').then((val)=>{
+        resolve(val["token"])  
+      }).catch((err)=>{
+        reject(err);
+      })
+    })
+  }
+
 
 }
